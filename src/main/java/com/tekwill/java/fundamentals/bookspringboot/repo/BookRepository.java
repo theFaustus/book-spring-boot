@@ -7,7 +7,9 @@ import com.tekwill.java.fundamentals.bookspringboot.domain.Book;
 import java.util.List;
 
 public interface BookRepository {
-    Book findBook(String isbn);
+    Book findBookByISBN(String isbn);
+
+    Book findBookById(Long bookId);
 
     List<Book> findAll();
 

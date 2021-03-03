@@ -19,7 +19,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public Book getBookByIsbn(String isbn) {
         logger.info("Entered getBookByIsbn with isbn = {}", isbn);
-        return bookRepository.findBook(isbn);
+        return bookRepository.findBookByISBN(isbn);
     }
 
     @Override
@@ -37,6 +37,11 @@ public class BookServiceImpl implements BookService {
     public int deleteBook(Long bookId) {
         logger.info("Entered deleteBook with bookId = {}", bookId);
         return bookRepository.deleteBook(bookId);
+    }
+
+    @Override
+    public Book getBookById(Long bookId) {
+        return bookRepository.findBookById(bookId);
     }
 
     @Override

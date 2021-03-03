@@ -6,46 +6,26 @@ import com.tekwill.java.fundamentals.bookspringboot.service.BookService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequiredArgsConstructor //spring will take this constructor for autowiring
+@RestController
+@RequestMapping("/books")
+@RequiredArgsConstructor
 public class BookController {
-    //@Autowired - possible, but not recommended
     private final BookService bookService;
 
-    public void renderViewBookByISBNPage(String isbn) {
-        Book bookByIsbn = bookService.getBookByIsbn(isbn);
-        System.out.println("<h1>Book by ISBN page</h1><p>" + bookByIsbn + "</p>");
-        System.out.println("<nav>tekwill</nav>");
+    @GetMapping( "/{bookId}")
+    public Book getBookById(@PathVariable Long bookId){
+        return bookService.getBookById(bookId);
     }
 
-    public void renderViewAllBooks() {
-        System.out.println("<h1>All books</h1><p>");
-        bookService.getAllBooks().forEach(b -> System.out.println(b));
-        System.out.println("</p>");
-        System.out.println("<nav>tekwill</nav>");
+    @GetMapping
+    public String foo(){
+        return "Hello my dear students! Read! Code! Experiment!";
     }
 
-    public void renderMessageAfterBookNameUpdated(String newBookName, Long bookId) {
-        System.out.println("<h1>All books</h1><p>");
-        System.out.println("<div class='alert'> Successfully updated " + bookService.updateBookNameByBookId(newBookName,
-                                                                                                            bookId) + " rows </div>");
-        System.out.println("</p>");
-        System.out.println("<nav>tekwill</nav>");
-    }
-
-    public void renderMessageAfterDeletedBook(Long bookId) {
-        System.out.println("<h1>All books</h1><p>");
-        System.out.println(
-                "<div class='alert'> Successfully deleted " + bookService.deleteBook(bookId) + " rows </div>");
-        System.out.println("</p>");
-        System.out.println("<nav>tekwill</nav>");
-    }
-
-    public void renderMessageAfterSavedBook(Book book) {
-        System.out.println("<h1>All books</h1><p>");
-        System.out.println("<div class='alert'> Successfully saved " + bookService.saveBook(book) + " rows </div>");
-        System.out.println("</p>");
-        System.out.println("<nav>tekwill</nav>");
-    }
 }

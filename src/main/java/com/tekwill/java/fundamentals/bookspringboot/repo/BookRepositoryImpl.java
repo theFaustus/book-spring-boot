@@ -33,7 +33,7 @@ public class BookRepositoryImpl implements BookRepository {
     public String DB_PASSWORD;
 
     @Override
-    public Book findBook(String isbn) {
+    public Book findBookByISBN(String isbn) {
         Book book = null;
         try (Connection connection = DriverManager.getConnection(DB_URL + DB_NAME, DB_USER, DB_PASSWORD);
              PreparedStatement st1 = connection.prepareStatement("SELECT * FROM book WHERE isbn = ?");
@@ -64,6 +64,43 @@ public class BookRepositoryImpl implements BookRepository {
 
         } catch (SQLException e) {
             logger.error("Something bad happened during fetching a book with isbn = {}", isbn, e);
+        }
+
+        return book;
+    }
+
+    @Override
+    public Book findBookById(Long bookId) {
+        Book book = null;
+        try (Connection connection = DriverManager.getConnection(DB_URL + DB_NAME, DB_USER, DB_PASSWORD);
+             PreparedStatement st1 = connection.prepareStatement("SELECT * FROM book WHERE id = ?");
+             PreparedStatement st2 = connection.prepareStatement("SELECT * FROM page WHERE book_id = ?")) {
+
+            st1.setLong(1, bookId);
+
+            try (ResultSet r = st1.executeQuery()) {
+                while (r.next()) {
+                    book = new Book(r.getLong("id"),
+                                    r.getString("isbn"),
+                                    r.getString("name"),
+                                    r.getBoolean("is_rare"),
+                                    r.getInt("number_of_pages"));
+                }
+
+                st2.setLong(1, bookId);
+
+                try (ResultSet r2 = st2.executeQuery()) {
+                    while (r2.next()) {
+                        Page page = new Page(r2.getLong("id"),
+                                             r2.getString("content"),
+                                             r2.getInt("page_number"));
+                        book.addPage(page);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            logger.error("Something bad happened during fetching a book with id = {}", bookId, e);
         }
 
         return book;

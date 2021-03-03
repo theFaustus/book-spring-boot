@@ -1,5 +1,6 @@
 package com.tekwill.java.fundamentals.bookspringboot.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
@@ -8,6 +9,7 @@ public class Page {
     private String content;
     private int pageNumber;
 
+    @JsonIgnore
     private Book book;
 
     public Page(Long id, String content, int pageNumber) {

@@ -2,8 +2,10 @@ package com.tekwill.java.fundamentals.bookspringboot.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class Page {
     private Long id;
     private String content;

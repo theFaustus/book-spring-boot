@@ -17,5 +17,5 @@ public interface BookService {
 
     int saveBook(Book book);
 
-
+    int update(Long id, Book book);
 }

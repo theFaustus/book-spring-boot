@@ -2,6 +2,7 @@ package com.tekwill.java.fundamentals.bookspringboot.service;
 
 
 import com.tekwill.java.fundamentals.bookspringboot.domain.Book;
+import com.tekwill.java.fundamentals.bookspringboot.domain.exceptions.BookNotFoundRuntimeException;
 import com.tekwill.java.fundamentals.bookspringboot.repo.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -30,22 +31,39 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public int updateBookNameByBookId(String newBookName, Long bookId) {
+        final Book bookById = bookRepository.findBookById(bookId);
+        if(bookById == null)
+            throw new BookNotFoundRuntimeException(String.format("Book with id [%s] not found", bookId));
         return bookRepository.updateBookNameByBookId(newBookName, bookId);
     }
 
     @Override
     public int deleteBook(Long bookId) {
+        final Book bookById = bookRepository.findBookById(bookId);
+        if(bookById == null)
+            throw new BookNotFoundRuntimeException(String.format("Book with id [%s] not found", bookId));
         logger.info("Entered deleteBook with bookId = {}", bookId);
         return bookRepository.deleteBook(bookId);
     }
 
     @Override
     public Book getBookById(Long bookId) {
-        return bookRepository.findBookById(bookId);
+        final Book bookById = bookRepository.findBookById(bookId);
+        if(bookById == null)
+            throw new BookNotFoundRuntimeException(String.format("Book with id [%s] not found", bookId));
+        return bookById;
     }
 
     @Override
     public int saveBook(Book book) {
         return bookRepository.saveBook(book);
+    }
+
+    @Override
+    public int update(Long id, Book book) {
+        if(book.getName() != null)
+            return updateBookNameByBookId(book.getName(), id);
+        //else if do for all the fields
+        return 0;
     }
 }

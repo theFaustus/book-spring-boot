@@ -3,10 +3,8 @@ package com.tekwill.java.fundamentals.bookspringboot.repo;
 
 import com.tekwill.java.fundamentals.bookspringboot.domain.Book;
 import com.tekwill.java.fundamentals.bookspringboot.domain.Page;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -20,8 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class BookRepositoryImpl implements BookRepository {
-    private static final Logger logger = LoggerFactory.getLogger(BookRepositoryImpl.class);
+public class JDBCBookRepositoryImpl implements BookRepository {
+    private static final Logger logger = LoggerFactory.getLogger(JDBCBookRepositoryImpl.class);
 
     @Value("${db.url}")
     public String DB_URL;
